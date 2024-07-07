@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: video-processor-job
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: video-processor
+    spec:
+      containers:
+      - name: video-processor
+        image: ghcr.io/twoabove/k3s-video-processing-worker:main
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      restartPolicy: OnFailure

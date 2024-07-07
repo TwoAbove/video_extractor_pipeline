@@ -1,0 +1,24 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: update-checker
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: update-checker
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              current_image=$(kubectl get job video-processor-job -o jsonpath='{.spec.template.spec.containers[0].image}')
+              latest_tag=$(curl -s "https://ghcr.io/v2/your-username/k3s-video-processing/video-processor/tags/list" | jq -r '.tags[]' | sort -V | tail -n1)
+              if [ "$current_image" != "ghcr.io/your-username/k3s-video-processing/video-processor:${latest_tag}" ]; then
+                kubectl delete job video-processor-job
+                kubectl apply -f k3s-configs/worker-job.yaml
+              fi
+          restartPolicy: OnFailure
