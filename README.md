@@ -1,6 +1,8 @@
 # K3s Video Processing Pipeline
 
-This repository contains the setup scripts and configuration files for a scalable video processing pipeline using K3s.
+This is a brain dump of the idea I had for a scalable video processing pipeline using K3s.
+
+<!-- This repository contains the setup scripts and configuration files for a scalable video processing pipeline using K3s. -->
 
 ## Prerequisites
 
