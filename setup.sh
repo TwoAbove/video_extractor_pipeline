@@ -38,6 +38,23 @@ helm upgrade --install loki grafana/loki-stack -f loki-values.yaml --namespace m
 # Install Grafana
 helm upgrade --install grafana grafana/grafana -f grafana-values.yaml --namespace monitoring
 
+# Setup psql database credentials in secret file template
+
+cat <<EOF > k3s-configs/psql-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credentials
+type: Opaque
+stringData:
+  DB_HOST: "your_db_host_or_ip"
+  DB_PORT: "5432"
+  DB_NAME: "video_processing"
+  DB_USER: "your_db_user"
+  DB_PASSWORD: "your_db_password"
+EOF
+
+
 echo "Setup complete."
 echo "Grafana is accessible at http://<your-k3s-node-ip>:30300"
 echo "Use the following command to get the Grafana admin password:"
