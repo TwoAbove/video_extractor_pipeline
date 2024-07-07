@@ -33,10 +33,13 @@ helm repo update
 kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
 
 # Install Loki and Promtail
-helm upgrade --install loki grafana/loki-stack -f loki-values.yaml --namespace monitoring
+helm upgrade --install loki grafana/loki-stack -f k3s-configs/loki-values.yaml --namespace monitoring
 
 # Install Grafana
-helm upgrade --install grafana grafana/grafana -f grafana-values.yaml --namespace monitoring
+helm upgrade --install grafana grafana/grafana -f k3s-configs/grafana-values.yaml --namespace monitoring
+
+# Nvidia stuff
+kubectl apply -f k3s-configs/nvidia-runtime-class.yaml
 
 # Setup psql database credentials in secret file template
 
